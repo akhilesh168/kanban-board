@@ -62,7 +62,7 @@ describe('<KanbanLane />', () => {
   const setup = () => {
     const store = mockStore(tasks);
     jest.spyOn(redux, 'useSelector').mockReturnValue({
-      tasks: tasks, // your mock here
+      tasks: tasks,
     });
 
     render(<KanbanLane title={title} items={items} />, {

@@ -50,7 +50,7 @@ describe('<TaskDetailsForm />', () => {
       }),
     }));
     jest.spyOn(redux, 'useSelector').mockReturnValue({
-      tasks: tasks, // your mock here
+      tasks: tasks,
     });
     render(
       <TaskDetailsForm onCancel={onCancel} handleSubmit={handleSubmit} />,

@@ -5,7 +5,9 @@ import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import createMockStore from 'redux-mock-store';
 import AddTask from '../components/AddTask';
+
 const mockStore = createMockStore([]);
+
 const mockUseLocationValue = {
   pathname: '/taskDetail',
   search: '',

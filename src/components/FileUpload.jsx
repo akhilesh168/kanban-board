@@ -11,7 +11,6 @@ const FileUpload = ({ onChangeHandler }) => {
     setFileName(file?.name);
     getBase64(file).then((base64) => {
       localStorage['fileBase64'] = base64;
-      console.debug('file stored', base64);
       onChangeHandler(base64);
     });
   };

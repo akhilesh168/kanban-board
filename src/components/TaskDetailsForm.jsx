@@ -1,8 +1,8 @@
 import AddTaskIcon from '@mui/icons-material/AddTask';
 import CancelIcon from '@mui/icons-material/Cancel';
-import { Box, Button, ButtonGroup, TextField } from '@mui/material';
+import { Box, Button, Stack, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { addNewTask, updateTask } from '../redux/TaskSlice';
@@ -44,16 +44,19 @@ const TaskDetailsForm = ({ handleSubmit, onCancel }) => {
     }
   };
 
-  const imageUploder = (e) => {
-    setTask(() => ({ ...task, imgData: e }));
-  };
+  const imageUploder = useCallback(
+    (e) => {
+      setTask(() => ({ ...task, imgData: e }));
+    },
+    [task]
+  );
   return (
     <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      flexDirection={'column'}
       sx={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flexDirection: 'column',
         bgcolor: (theme) => 'grey.200',
         m: 5,
         p: 10,
@@ -107,13 +110,8 @@ const TaskDetailsForm = ({ handleSubmit, onCancel }) => {
             ''
           )}
         </Box>
-        <ButtonGroup
-          size="small"
-          variant="outlined"
-          aria-label="outlined button group"
-        >
+        <Stack sx={{ m: 2, p: 2 }} direction={'row'} spacing={2}>
           <FileUpload onChangeHandler={imageUploder} />
-
           <Button
             variant="contained"
             onClick={onSubmit}
@@ -130,7 +128,7 @@ const TaskDetailsForm = ({ handleSubmit, onCancel }) => {
           >
             Cancel
           </Button>
-        </ButtonGroup>
+        </Stack>
       </form>
     </Box>
   );

@@ -7,12 +7,12 @@ describe('Test helper methods', () => {
     const file = new File(['test file content'], 'test.txt', {
       type: 'text/plain',
     });
-    const x = await waitFor(() => getBase64(file));
-    expect(x).toBeTruthy();
+    const base64Output = await waitFor(() => getBase64(file));
+    expect(base64Output).toBeTruthy();
   });
   test('should createKeysObject method be called', async () => {
-    const x = createKeysObject(DefaultCards);
-    expect(x).toEqual({
+    const newObject = createKeysObject(DefaultCards);
+    expect(newObject).toEqual({
       ToDo: [],
       'In Progress': [],
       Done: [],

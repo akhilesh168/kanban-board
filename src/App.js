@@ -3,15 +3,28 @@ import { AppBar, Avatar, Box, CssBaseline, Tooltip } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import { ErrorBoundary } from 'react-error-boundary';
+import { useDispatch } from 'react-redux';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.css';
+import FallBack from './components/FallBack';
 import KanbanBoard from './components/KanbanBoard';
 import PageNotFound from './components/PageNotFound';
 import TaskDetailsForm from './components/TaskDetailsForm';
+import { onResetState } from './redux/TaskSlice';
 
 function App() {
+  const dispatch = useDispatch();
+  const logErrorToService = (error, info) => {
+    console.error('Caught an error:', error, info);
+  };
+
   return (
-    <>
+    <ErrorBoundary
+      FallbackComponent={FallBack}
+      onReset={() => dispatch(onResetState)}
+      onError={logErrorToService}
+    >
       <CssBaseline />
       <AppBar position="static">
         <Toolbar variant="dense" sx={{ justifyContent: 'space-between' }}>
@@ -23,8 +36,9 @@ function App() {
           >
             <MenuIcon />
           </IconButton>
+
           <Typography
-            id="mainTitleJiraBoard"
+            data-testid="mainTitleJiraBoard"
             variant="h6"
             color="inherit"
             component="div"
@@ -50,7 +64,7 @@ function App() {
           <Route element={<PageNotFound />} path="*" />
         </Routes>
       </BrowserRouter>
-    </>
+    </ErrorBoundary>
   );
 }
 

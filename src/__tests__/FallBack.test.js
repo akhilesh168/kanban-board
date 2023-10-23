@@ -2,15 +2,20 @@ import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import createMockStore from 'redux-mock-store';
-import PageNotFound from '../components/PageNotFound';
+import FallBack from '../components/FallBack';
 
 const mockStore = createMockStore([]);
 
-describe('<TaskDetailsForm />', () => {
-  let nameTextBox;
+describe('<FallBack component testing />', () => {
+  let labelBox, error, resetErrorBoundary;
+
   const setup = () => {
+    error = {
+      message: 'Error Occured',
+    };
+    resetErrorBoundary = jest.fn();
     const store = mockStore({});
-    render(<PageNotFound />, {
+    render(<FallBack error={error} resetErrorBoundary={resetErrorBoundary} />, {
       wrapper: ({ children }) => (
         <Provider store={store}>
           <MemoryRouter>{children}</MemoryRouter>
@@ -18,10 +23,10 @@ describe('<TaskDetailsForm />', () => {
       ),
     });
 
-    nameTextBox = screen.getByText(/Page Not found/i);
+    labelBox = screen.getByText(/something went wrong:/i);
   };
-  test('should click handleSubmit', () => {
+  test('should render Fallback', () => {
     setup();
-    expect(nameTextBox).toBeInTheDocument();
+    expect(labelBox).toBeInTheDocument();
   });
 });

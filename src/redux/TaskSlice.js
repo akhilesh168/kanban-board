@@ -10,6 +10,9 @@ export const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
+    onResetState: (state, action) => {
+      state = initialState;
+    },
     addNewCard: (state, action) => {
       state.tasks[action.payload] = [];
     },
@@ -75,6 +78,7 @@ export const {
   deleteTask,
   moveTask,
   markTaskAsFavorite,
+  onResetState,
 } = tasksSlice.actions;
 
 export default tasksSlice.reducer;

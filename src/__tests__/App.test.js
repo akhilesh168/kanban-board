@@ -2,23 +2,51 @@ import { render, screen } from '@testing-library/react';
 
 import * as redux from 'react-redux';
 import { Provider } from 'react-redux';
-import { MemoryRouter } from 'react-router-dom';
 import createMockStore from 'redux-mock-store';
-import AddTask from '../components/AddTask';
+import App from '../App';
+
 const mockStore = createMockStore([]);
 const mockUseLocationValue = {
-  pathname: '/taskDetail',
+  pathname: '',
   search: '',
   hash: '',
   state: { cardTitle: 'UnAssigned', name: 'Mission Impossible' },
 };
+jest.mock('@dnd-kit/utilities', () => {
+  return {
+    CSS: {
+      Translate: {},
+    },
+  };
+});
+
+jest.mock('@dnd-kit/core', () => {
+  const useDroppableMock = () => {
+    return {
+      setNodeRef: () => {},
+    };
+  };
+  const useDraggableMock = () => {
+    return {
+      setNodeRef: () => {},
+      attributes: [],
+      transform: {},
+      listeners: [],
+    };
+  };
+  return {
+    useDroppable: useDroppableMock,
+    useDraggable: useDraggableMock,
+    DndContext: () => (
+      <div data-testid="Mission Impossible">This is empty text</div>
+    ),
+  };
+});
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useSelector: jest.fn(),
 }));
-describe('<AddTask />', () => {
-  let setOpen, open, titleTextBox, task;
-
+describe('<App />', () => {
   const tasks = {
     tasks: {
       ToDo: [],
@@ -45,33 +73,14 @@ describe('<AddTask />', () => {
       }),
     }));
     jest.spyOn(redux, 'useSelector').mockReturnValue({
-      tasks: tasks, // your mock here
+      tasks: tasks,
     });
-    render(<AddTask open={open} setOpen={setOpen} />, {
-      wrapper: ({ children }) => (
-        <Provider store={store}>
-          <MemoryRouter>{children}</MemoryRouter>
-        </Provider>
-      ),
+    render(<App />, {
+      wrapper: ({ children }) => <Provider store={store}>{children}</Provider>,
     });
-    titleTextBox = screen.getByLabelText(/name/i);
   };
-
-  beforeEach(() => {
-    setOpen = jest.fn();
-    open = true;
-    task = {
-      name: 'Mission Impossible',
-      description: 'This is really difficult',
-      deadline: '2023-10-22T08:16:50.855Z',
-      imgData: '',
-      isFavorite: false,
-    };
-  });
-  test('should check for default form initial labels for task form', () => {
+  test('should check for default form initial labels for App form', () => {
     setup();
-    expect(
-      screen.getByText('Fill out the details for adding a new task.')
-    ).toBeInTheDocument();
+    expect(screen.getByTestId(/mainTitleJiraBoard/i)).toBeInTheDocument();
   });
 });

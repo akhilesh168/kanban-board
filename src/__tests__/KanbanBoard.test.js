@@ -66,7 +66,7 @@ describe('<KanbanBoard />', () => {
   const setup = () => {
     const store = mockStore(tasks);
     jest.spyOn(redux, 'useSelector').mockReturnValue({
-      tasks: tasks, // your mock here
+      tasks: tasks,
     });
 
     render(
@@ -83,8 +83,6 @@ describe('<KanbanBoard />', () => {
     );
     titleTextBox = screen.getByTestId(/Mission Impossible/i);
   };
-
-  beforeEach(() => {});
   test('should check for default values for KanbanBoard DndContext', () => {
     setup();
     expect(titleTextBox).toBeInTheDocument();
